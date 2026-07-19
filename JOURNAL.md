@@ -6,6 +6,19 @@
 
 **Tier:** [x] Tier 1 [ ] Tier 2 [ ] Tier 3
 
+**"Is this issue right for me?" checklist reasoning:**
+
+- **Understanding the issue:** I can explain the problem and expected behavior in my own words. The health endpoint is incorrectly reporting PostgreSQL as unavailable because its database probe uses a raw SQL string that SQLAlchemy 2.x rejects.
+- **Affected area:** The issue is contained in the API layer, primarily in the `health_check` route in `api/routes/health.py`. I located the route and read the surrounding PostgreSQL, Redis, and vector database checks.
+- **Definition of done:** Before the fix, a reachable PostgreSQL database may be reported as unhealthy and `/health` may return a failure response. After the fix, the probe should use SQLAlchemy's supported textual SQL format, report PostgreSQL as healthy when it is reachable, and continue reporting genuine database failures correctly.
+- **Tier fit:** This is my first contribution to this codebase, so Tier 1 is an appropriate choice for me. The expected change is localized to one route and its related tests and should not require changes to the frontend, database schema, RAG pipeline, or agent system.
+- **Codebase readiness:** I found the specific function referenced by the issue and reviewed enough surrounding code to understand how an exception changes the dependency status and causes the endpoint to return an unhealthy response.
+- **Test readiness:** Before implementing the change, I will find and read the existing API test patterns and add a regression test that confirms the database probe succeeds when SQLAlchemy receives a valid textual SQL expression.
+- **Other contributors:** I checked the issue comments and cohort ledger. When i signed up there were only about 4 people working on it but I understand that multiple students can work on the same issue.
+- **Time and scope:** Tier 1 issues are expected to be achievable within approximately 3-6 hours of focused work so it is realistic for me to complete before the Week 9 deadline.
+- **Blockers:** The issue does not list any unresolved blocker or dependency that must be completed first.
+- **Verdict:** This issue is a realistic fit for my current experience, available time, and the Module 3 contribution requirements.
+
 **Problem summary:**
 The database health check in `api/routes/health.py` sends `"SELECT 1"` to SQLAlchemy as a plain string. Under SQLAlchemy 2.x, textual SQL has to be explicitly declared, so the database probe raises an `ArgumentError` even when PostgreSQL is available. This causes the `/health` endpoint to report that the database is down even though it is reachable. A successful fix will execute the probe using the supported SQLAlchemy format and verify the corrected behavior with an appropriate test.
 
