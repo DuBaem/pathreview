@@ -30,12 +30,12 @@ The database health check in `api/routes/health.py` sends `"SELECT 1"` to SQLAlc
 
 ## Week 8 - Reproduction & solution planning
 
-**Reproduction commit link:** Pending until the reproduction commit is pushed
+**Reproduction commit link:** https://github.com/DuBaem/pathreview/commit/ed8e1a5
 
 **Reproduction summary:**
 I confirmed that the PostgreSQL Docker service was healthy, then executed the same raw `"SELECT 1"` string used by `health_check()` through the project's real SQLAlchemy `AsyncSession`. SQLAlchemy 2.0.51 raised an `ArgumentError` for the raw string, while `text("SELECT 1")` succeeded through the same session and returned `1`, confirming that the failure is caused by the query format rather than an unavailable database.
 
-**PLAN.md link:** Pending
+**PLAN.md link:** https://github.com/DuBaem/pathreview/blob/fix/154-health-check-db-probe/PLAN.md
 
 **Blockers or open questions:**
-The complete `/health` route also contains an unrelated Redis configuration mismatch because `health.py` refers to `redis_host` and `redis_port`, while the settings object defines `redis_url`. This is outside issue #154, so the planned regression test should isolate the PostgreSQL probe without expanding the scope of this contribution.
+
