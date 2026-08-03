@@ -39,3 +39,16 @@ I confirmed that the PostgreSQL Docker service was healthy, then executed the sa
 
 **Blockers or open questions:**
 
+## Week 9 - Solution building & PR submission
+
+### Check-in 1 (mid-week)
+
+**Current progress:**
+I reproduced issue #154 using SQLAlchemy 2.0.51 and the project's real `AsyncSession`, documented the reproduction, and completed `PLAN.md`. I also ran the existing unit-test suite and recorded a baseline of 375 passing tests and 53 pre-existing failures so I can identify whether my changes introduce any new failures.
+
+**Next steps:**
+I will update the PostgreSQL probe in `api/routes/health.py`, create focused regression tests in `tests/unit/test_health.py`, run the new tests directly, run `make check`, and compare the full unit-test results against the existing baseline. I will then open a draft pull request and request feedback before marking it ready for review.
+
+**Blockers:**
+
+---
